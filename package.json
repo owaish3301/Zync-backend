@@ -1,0 +1,32 @@
+{
+  "name": "zync-backend",
+  "version": "1.0.0",
+  "description": "An open-source task management system",
+  "homepage": "https://github.com/owaish3301/Zync-backend#readme",
+  "bugs": {
+    "url": "https://github.com/owaish3301/Zync-backend/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/owaish3301/Zync-backend.git"
+  },
+  "license": "MIT",
+  "author": "owaish",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev" : "tsx watch src/index.ts",
+    "build" : "tsc",
+    "start" : "node dist/index.js"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3"
+  }
+}
