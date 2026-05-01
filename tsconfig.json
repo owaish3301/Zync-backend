@@ -4,13 +4,12 @@
     // file layout
     "rootDir": "./src",
     "outDir": "./dist",
-
     // environment settings
     // see also https://aka.ms/tsconfig/module
     "module": "ESNext",
     "target": "ES2023",
     "moduleResolution" : "bundler",
-    "esModuleInterlap" : true,
+    "esModuleInterop" : true,
     "ignoreDeprecations" : "6.0",
     //"types": [],
     // For nodejs:
@@ -43,5 +42,6 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+  },
+  "include": ["src/**/*"]
 }
