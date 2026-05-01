@@ -5,9 +5,177 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/lib/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+model User {
+  id            String    @id
+  name          String
+  username      String? @unique
+	displayUsername String?
+  email         String
+  emailVerified Boolean   @default(false)
+  image         String?
+  role          Role      @default(User)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  deletedAt     DateTime?
+
+  sessions      Session[]
+  accounts      Account[]
+  maintainedProjects Project[] @relation("MaintainedProjects")
+  assignedTasks Task[] @relation("AssignedTasks")
+  createdTasks Task[] @relation("CreatedBy")
+  taskRequests TaskRequest[]
+  comments Comment[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+enum Role { 
+  User
+  SuperAdmin
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([token])
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier])
+  @@map("verification")
+}
+
+model Project {
+  id String @default(uuid()) @id
+  slug String @unique
+  title String
+  shortDescription String
+  fullDescription String
+  techStack String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  maintainerId String
+  maintainer User @relation("MaintainedProjects", fields: [maintainerId], references: [id], onDelete: Cascade)
+  tasks Task[]
+  taskRequests TaskRequest[]
+
+  @@index([maintainerId])
+  @@index([deletedAt])
+}
+
+model Task {
+  id String @default(uuid()) @id
+  title String
+  description String
+  status TaskStatus @default(TODO)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deletedAt DateTime?
+
+  projectId String
+  assigneeId String?
+  createdById String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  assignee User? @relation("AssignedTasks", fields: [assigneeId], references: [id])
+  createdBy User @relation("CreatedBy", fields: [createdById], references: [id])
+  comments Comment[]
+
+  @@index([projectId])
+  @@index([assigneeId])
+  @@index([createdById])
+  @@index([status])
+  @@index([projectId, status])
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  IN_REVIEW
+  COMPLETED
+}
+
+model TaskRequest {
+  id String @default(uuid()) @id
+  title String
+  description String
+  status TaskRequestStatus @default(PENDING)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  projectId String
+  createdById String
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdBy User @relation(fields: [createdById], references: [id])
+
+  @@index([status])
+  @@index([projectId])
+  @@index([createdById])
+}
+
+enum TaskRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Comment {
+  id String @default(uuid()) @id
+  content String
+  createdAt DateTime @default(now())
+  deletedAt DateTime?
+
+  userId String
+  taskId String
+  user User @relation(fields: [userId], references: [id])
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([taskId])
 }
