@@ -81,3 +81,8 @@ export type TaskRequest = Prisma.TaskRequestModel
  * 
  */
 export type Comment = Prisma.CommentModel
+/**
+ * Model Invite
+ * 
+ */
+export type Invite = Prisma.InviteModel
