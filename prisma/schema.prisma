@@ -24,7 +24,7 @@ model User {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   deletedAt     DateTime?
-
+  status        UserStatus @default(PENDING)
   sessions      Session[]
   accounts      Account[]
   maintainedProjects Project[] @relation("MaintainedProjects")
@@ -32,9 +32,17 @@ model User {
   createdTasks Task[] @relation("CreatedBy")
   taskRequests TaskRequest[]
   comments Comment[]
+  invites Invite[] @relation("InviteCreatedBy")
+  usedInvite Invite[] @relation("InviteUsedBy")
 
   @@unique([email])
   @@map("user")
+}
+
+enum UserStatus {
+  PENDING
+  ACTIVE
+  BANNED
 }
 
 enum Role { 
@@ -178,4 +186,20 @@ model Comment {
 
   @@index([userId])
   @@index([taskId])
+}
+
+model Invite {
+  id          String @default(uuid()) @id
+  code        String @unique
+  createdById String
+  createdBy   User    @relation("InviteCreatedBy",fields: [createdById], references: [id])
+  usedById    String?
+  usedBy      User?   @relation("InviteUsedBy",fields: [usedById], references: [id])
+  maxUses     Int     @default(1)
+  useCount    Int     @default(0)
+  expiresAt   DateTime @default(dbgenerated("NOW() + interval '2 hours'"))
+  createdAt   DateTime @default(now())
+
+  @@index([createdById])
+  @@index([code])
 }
