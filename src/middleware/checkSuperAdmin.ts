@@ -1,3 +1,4 @@
+// this middleware is dependedent upon validateAauth middleware, use this middleware only after validateAuth
 import type { Request, Response, NextFunction } from "express";
 
 function checkSuperAdmin(req: Request, res: Response, next: NextFunction) {
@@ -7,4 +8,3 @@ function checkSuperAdmin(req: Request, res: Response, next: NextFunction) {
   next();
 }
 export default checkSuperAdmin;
-

@@ -1,3 +1,4 @@
+// this middleware is dependedent upton validateAuth, use it after that one
 import type { Request, Response, NextFunction } from "express";
 
 function requireActive(req: Request, res: Response, next: NextFunction) {

@@ -1,6 +1,7 @@
-import type {Request, Response, NextFunction } from "express";
+// this middleware is dependedent upon validateAuth, use it only after that one
+import type { Request, Response, NextFunction } from "express";
 
-function requireUsername(req:Request, res:Response, next:NextFunction) {
+function requireUsername(req: Request, res: Response, next: NextFunction) {
   if (!req.session!.user.username) {
     return res.status(403).json({
       error: "USERNAME_REQUIRED",
@@ -8,6 +9,7 @@ function requireUsername(req:Request, res:Response, next:NextFunction) {
     });
   }
   next();
-};
+}
 
 export default requireUsername;
+
