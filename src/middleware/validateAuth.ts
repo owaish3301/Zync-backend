@@ -8,7 +8,9 @@ async function validateAuth(req: Request, res: Response, next: NextFunction) {
       headers: fromNodeHeaders(req.headers),
     });
     if (!session) {
-      return res.status(401).json({error:"unauthorized", message: "Unauthorized" });
+      return res
+        .status(401)
+        .json({ error: "UNAUTHORIZED", message: "Unauthorized" });
     }
 
     req.session = session;

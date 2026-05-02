@@ -309,7 +309,7 @@ export type InviteScalarWhereWithAggregatesInput = {
 
 export type InviteCreateInput = {
   id?: string
-  code: string
+  code?: string
   maxUses?: number
   useCount?: number
   expiresAt?: Date | string
@@ -320,7 +320,7 @@ export type InviteCreateInput = {
 
 export type InviteUncheckedCreateInput = {
   id?: string
-  code: string
+  code?: string
   createdById: string
   usedById?: string | null
   maxUses?: number
@@ -353,7 +353,7 @@ export type InviteUncheckedUpdateInput = {
 
 export type InviteCreateManyInput = {
   id?: string
-  code: string
+  code?: string
   createdById: string
   usedById?: string | null
   maxUses?: number
@@ -529,7 +529,7 @@ export type IntFieldUpdateOperationsInput = {
 
 export type InviteCreateWithoutCreatedByInput = {
   id?: string
-  code: string
+  code?: string
   maxUses?: number
   useCount?: number
   expiresAt?: Date | string
@@ -539,7 +539,7 @@ export type InviteCreateWithoutCreatedByInput = {
 
 export type InviteUncheckedCreateWithoutCreatedByInput = {
   id?: string
-  code: string
+  code?: string
   usedById?: string | null
   maxUses?: number
   useCount?: number
@@ -559,7 +559,7 @@ export type InviteCreateManyCreatedByInputEnvelope = {
 
 export type InviteCreateWithoutUsedByInput = {
   id?: string
-  code: string
+  code?: string
   maxUses?: number
   useCount?: number
   expiresAt?: Date | string
@@ -569,7 +569,7 @@ export type InviteCreateWithoutUsedByInput = {
 
 export type InviteUncheckedCreateWithoutUsedByInput = {
   id?: string
-  code: string
+  code?: string
   createdById: string
   maxUses?: number
   useCount?: number
@@ -635,7 +635,7 @@ export type InviteUpdateManyWithWhereWithoutUsedByInput = {
 
 export type InviteCreateManyCreatedByInput = {
   id?: string
-  code: string
+  code?: string
   usedById?: string | null
   maxUses?: number
   useCount?: number
@@ -645,7 +645,7 @@ export type InviteCreateManyCreatedByInput = {
 
 export type InviteCreateManyUsedByInput = {
   id?: string
-  code: string
+  code?: string
   createdById: string
   maxUses?: number
   useCount?: number

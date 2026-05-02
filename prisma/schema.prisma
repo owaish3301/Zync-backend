@@ -190,7 +190,7 @@ model Comment {
 
 model Invite {
   id          String @default(uuid()) @id
-  code        String @unique
+  code        String @default(uuid()) @unique
   createdById String
   createdBy   User    @relation("InviteCreatedBy",fields: [createdById], references: [id])
   usedById    String?
