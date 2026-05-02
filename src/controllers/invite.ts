@@ -19,12 +19,10 @@ async function createInvite(req: Request, res: Response, next: NextFunction) {
       data: { inviteCode: invite.code, expiresAt: invite.expiresAt },
     });
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        error: "INTERNAL_ERROR",
-        message: "Error occured while creating invite.",
-      });
+    return res.status(500).json({
+      error: "INTERNAL_ERROR",
+      message: "Error occured while creating invite.",
+    });
   }
 }
 
