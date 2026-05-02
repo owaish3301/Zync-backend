@@ -4,6 +4,7 @@ import { toNodeHandler } from "better-auth/node";
 import { auth } from "./lib/auth.js";
 import cors from "cors";
 import { inviteRouter } from "./routes/invite.js";
+import { userRouter } from "./routes/user.js";
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.get("/api/health", (_req, res: Response, _next) => {
 });
 
 app.use("/api/invites", inviteRouter);
+app.use("/api/users", userRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running at port ${PORT}`);

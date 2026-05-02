@@ -1,8 +1,8 @@
 import { Router } from "express";
-import validateAuth from "../middleware/validateAuth";
-import requireUsername from "../middleware/requireUsername";
-import createInvite from "../controller/invite";
-import requireActive from "../middleware/requireActive";
+import validateAuth from "../middlewares/validateAuth";
+import requireUsername from "../middlewares/requireUsername";
+import createInvite from "../controllers/invite";
+import requireActive from "../middlewares/requireActive";
 
 const router = Router();
 
