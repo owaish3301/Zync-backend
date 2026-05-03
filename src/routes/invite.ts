@@ -1,5 +1,5 @@
 import { Router } from "express";
-import validateAuth from "../middlewares/validateAuth";
+import validateAuth from "../middlewares/requireAuth";
 import requireUsername from "../middlewares/requireUsername";
 import createInvite from "../controllers/invite";
 import requireActive from "../middlewares/requireActive";

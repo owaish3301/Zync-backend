@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { prisma } from "../lib/prisma";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 
 async function getUser(req: Request, res: Response, next: NextFunction) {
   try {
@@ -34,4 +35,102 @@ async function getUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export default getUser;
+async function activateUser(req: Request, res: Response, next: NextFunction) {
+  try {
+    const id = req.params.id;
+    if (!id) {
+      return res
+        .status(400)
+        .json({ error: "MISSING_USER_ID", message: "User id not provided" });
+    }
+    if (typeof id !== "string") {
+      return res
+        .status(400)
+        .json({ error: "INVALID_ID", message: "Provide a valid user id" });
+    }
+    const user = await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        status: "ACTIVE",
+      },
+    });
+    return res.status(200).json({ message: "user activated" });
+  } catch (error: unknown) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return res
+          .status(404)
+          .json({ error: "MISSING_USER", message: "User not found" });
+      }
+    }
+
+    return res.status(500).json({
+      error: "INTERNAL_SERVER_ERROR",
+      message: "Internal server error occured during upgrading user",
+    });
+  }
+}
+
+async function banUser(req: Request, res: Response, next: NextFunction) {
+  try {
+    const id = req.params.id;
+    if (!id) {
+      return res
+        .status(400)
+        .json({ error: "MISSING_USER_ID", message: "User id not provided" });
+    }
+    if (typeof id !== "string") {
+      return res
+        .status(400)
+        .json({ error: "INVALID_ID", message: "Provide a valid user id" });
+    }
+    const user = await prisma.user.update({
+      where: { id },
+      data: { status: "BANNED" },
+    });
+
+    return res.status(200).json({ message: "User banned" });
+  } catch (error: unknown) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return res
+          .status(404)
+          .json({ error: "MISSING_USER", message: "User not found" });
+      }
+    }
+    return res
+      .status(500)
+      .json({
+        error: "INTERNAL_SERVER_ERROR",
+        message: "Error occured while banning the user",
+      });
+  }
+}
+
+async function deleteUser(req: Request, res: Response, next: NextFunction) {
+  try{
+    const id = req.params.id;
+    if (!id) {
+      return res
+        .status(400)
+        .json({ error: "MISSING_USER_ID", message: "User id not provided" });
+    }
+    if (typeof id !== "string") {
+      return res
+        .status(400)
+        .json({ error: "INVALID_ID", message: "Provide a valid user id" });
+    }
+    const user = await prisma.user.update({
+      where:{id:id},
+      data:{
+        deletedAt: new Date()
+      }
+    })
+  }catch(error:unknown){
+
+  }
+}
+
+export { getUser, activateUser, banUser };
