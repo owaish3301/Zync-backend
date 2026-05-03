@@ -100,17 +100,15 @@ async function banUser(req: Request, res: Response, next: NextFunction) {
           .json({ error: "MISSING_USER", message: "User not found" });
       }
     }
-    return res
-      .status(500)
-      .json({
-        error: "INTERNAL_SERVER_ERROR",
-        message: "Error occured while banning the user",
-      });
+    return res.status(500).json({
+      error: "INTERNAL_SERVER_ERROR",
+      message: "Error occured while banning the user",
+    });
   }
 }
 
 async function deleteUser(req: Request, res: Response, next: NextFunction) {
-  try{
+  try {
     const id = req.params.id;
     if (!id) {
       return res
@@ -123,14 +121,27 @@ async function deleteUser(req: Request, res: Response, next: NextFunction) {
         .json({ error: "INVALID_ID", message: "Provide a valid user id" });
     }
     const user = await prisma.user.update({
-      where:{id:id},
-      data:{
-        deletedAt: new Date()
-      }
-    })
-  }catch(error:unknown){
+      where: { id: id },
+      data: {
+        deletedAt: new Date(),
+      },
+    });
 
+    return res.status(204).send();
+  } catch (error: unknown) {
+    if (error instanceof PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        return res
+          .status(404)
+          .json({ error: "MISSING_USER", message: "User not found" });
+      }
+    }
+
+    return res.status(500).json({
+      error: "INTERNAL_SERVER_ERROR",
+      message: "Internal server error occured during upgrading user",
+    });
   }
 }
 
-export { getUser, activateUser, banUser };
+export { getUser, activateUser, banUser, deleteUser };
