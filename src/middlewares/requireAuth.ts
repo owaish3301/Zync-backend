@@ -16,7 +16,7 @@ async function validateAuth(req: Request, res: Response, next: NextFunction) {
     req.session = session;
 
     next();
-  } catch (error) {
+  } catch {
     return res.status(500).json({ message: "Auth error" });
   }
 }

@@ -1,8 +1,8 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/client";
 
-async function getUser(req: Request, res: Response, next: NextFunction) {
+async function getUser(req: Request, res: Response) {
   try {
     const username = req.params.username;
     if (!username) {
@@ -28,14 +28,14 @@ async function getUser(req: Request, res: Response, next: NextFunction) {
         email: user?.email,
       },
     });
-  } catch (error) {
+  } catch {
     return res
       .status(500)
       .json({ error: "INTERNAL_ERROR", message: "Internal error" });
   }
 }
 
-async function activateUser(req: Request, res: Response, next: NextFunction) {
+async function activateUser(req: Request, res: Response) {
   try {
     const id = req.params.id;
     if (!id) {
@@ -48,7 +48,7 @@ async function activateUser(req: Request, res: Response, next: NextFunction) {
         .status(400)
         .json({ error: "INVALID_ID", message: "Provide a valid user id" });
     }
-    const user = await prisma.user.update({
+    await prisma.user.update({
       where: {
         id: id,
       },
@@ -73,7 +73,7 @@ async function activateUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function banUser(req: Request, res: Response, next: NextFunction) {
+async function banUser(req: Request, res: Response) {
   try {
     const id = req.params.id;
     if (!id) {
@@ -86,7 +86,7 @@ async function banUser(req: Request, res: Response, next: NextFunction) {
         .status(400)
         .json({ error: "INVALID_ID", message: "Provide a valid user id" });
     }
-    const user = await prisma.user.update({
+    await prisma.user.update({
       where: { id },
       data: { status: "BANNED" },
     });
@@ -107,7 +107,7 @@ async function banUser(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-async function deleteUser(req: Request, res: Response, next: NextFunction) {
+async function deleteUser(req: Request, res: Response) {
   try {
     const id = req.params.id;
     if (!id) {
@@ -120,7 +120,7 @@ async function deleteUser(req: Request, res: Response, next: NextFunction) {
         .status(400)
         .json({ error: "INVALID_ID", message: "Provide a valid user id" });
     }
-    const user = await prisma.user.update({
+    await prisma.user.update({
       where: { id: id },
       data: {
         deletedAt: new Date(),

@@ -1,7 +1,7 @@
-import type { Request, Response, NextFunction } from "express";
+import type { Request, Response } from "express";
 import { prisma } from "../lib/prisma";
 
-async function createInvite(req: Request, res: Response, next: NextFunction) {
+async function createInvite(req: Request, res: Response) {
   try {
     const session = req.session;
     const maxUses = session!.user.role === "SuperAdmin" ? req.body.maxUses : 1;
@@ -18,7 +18,7 @@ async function createInvite(req: Request, res: Response, next: NextFunction) {
       message: "Invite created",
       data: { inviteCode: invite.code, expiresAt: invite.expiresAt },
     });
-  } catch (error) {
+  } catch {
     return res.status(500).json({
       error: "INTERNAL_ERROR",
       message: "Error occured while creating invite.",

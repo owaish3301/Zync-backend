@@ -20,7 +20,7 @@ app.all("/api/auth/{*any}", toNodeHandler(auth));
 
 app.use(express.json());
 
-app.get("/api/health", (_req, res: Response, _next) => {
+app.get("/api/health", (_req, res: Response) => {
   res.status(200).json({ message: "All good!" });
 });
 

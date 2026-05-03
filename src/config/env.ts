@@ -10,6 +10,6 @@ function validateAndGetEnv(name: string): string {
 
 const PORT:number = Number(validateAndGetEnv("PORT"));
 const DATABASE_URL:string = validateAndGetEnv("DATABASE_URL");
-const BYPASS_INVITE:boolean = process.env.BYPASS_INVITE === "true"? true:false || false;
+const BYPASS_INVITE:boolean = process.env.BYPASS_INVITE === "true"? true:false;
 
 export { PORT, DATABASE_URL, BYPASS_INVITE };
