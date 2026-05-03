@@ -6,6 +6,7 @@ import { APIError, createAuthMiddleware } from "better-auth/api";
 import { prisma } from "./prisma";
 
 export const auth = betterAuth({
+  trustedOrigins:["*"],
   emailAndPassword: {
     enabled: true,
   },
@@ -27,6 +28,11 @@ export const auth = betterAuth({
         defaultValue: "PENDING",
         input: false,
       },
+      deletedAt : {
+        type: "date",
+        required: false,
+        input: true,
+      }
     },
   },
 
