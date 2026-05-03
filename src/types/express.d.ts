@@ -1,10 +1,12 @@
+import { auth } from "../lib/auth";
+type Session = typeof auth.$Infer.Session;
+
 declare global {
   namespace Express {
     interface Request {
-      session?: import("../lib/auth.js").auth.$Infer.Session;
+      session?: Session
     }
   }
 }
 
 export {};
-
