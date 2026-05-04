@@ -73,6 +73,8 @@ Signups are restricted to invite-only. Every new user needs a valid invite code 
 
 ---
 
+==Note : This is an important decision for race condition during invite claims, if ever we want to change the number of max users that can signup from one invite code then we will need to fix the after hook in the signup auth.==What i mean by change the number of max users for a code is that - if after creating a invite code for lets say 5 user the creator decided to edit that to 6.
+
 ## How to Integrate
 
 There are two ways to call the auth API from the frontend:

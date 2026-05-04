@@ -6,7 +6,7 @@ import { APIError, createAuthMiddleware } from "better-auth/api";
 import { prisma } from "./prisma";
 
 export const auth = betterAuth({
-  trustedOrigins:["*"],
+  trustedOrigins: ["*"],
   emailAndPassword: {
     enabled: true,
   },
@@ -28,11 +28,11 @@ export const auth = betterAuth({
         defaultValue: "PENDING",
         input: false,
       },
-      deletedAt : {
+      deletedAt: {
         type: "date",
         required: false,
         input: true,
-      }
+      },
     },
   },
 
@@ -106,23 +106,38 @@ export const auth = betterAuth({
         where: { code: body.inviteCode },
         include: { createdBy: true },
       });
-      if (!invite) return;
+      if (!invite) {
+        await prisma.user.delete({ where: { id: newSession.user.id } });
+        throw new APIError("BAD_REQUEST", {
+          message: "Invalid invite code",
+        });
+      }
 
       const status =
         invite.createdBy.role === "SuperAdmin" ? "ACTIVE" : "PENDING";
 
-      await prisma.user.update({
-        where: { id: newSession.user.id },
-        data: { status },
-      });
-
-      await prisma.invite.update({
-        where: { code: body.inviteCode },
+      const claimed = await prisma.invite.updateMany({
+        where: {
+          code: invite.code,
+          expiresAt: { gt: new Date() },
+          useCount: { lt: invite.maxUses },
+        },
         data: {
           useCount: { increment: 1 },
           usedById: newSession.user.id,
         },
       });
+      if (claimed.count !== 1) {
+        await prisma.user.delete({ where: { id: newSession.user.id } });
+        throw new APIError("BAD_REQUEST", {
+          message: "Invite code has already been used",
+        });
+      } else {
+        await prisma.user.update({
+          where: { id: newSession.user.id },
+          data: { status },
+        });
+      }
     }),
   },
 });
