@@ -116,26 +116,46 @@ export const auth = betterAuth({
       const status =
         invite.createdBy.role === "SuperAdmin" ? "ACTIVE" : "PENDING";
 
-      const claimed = await prisma.invite.updateMany({
-        where: {
-          code: invite.code,
-          expiresAt: { gt: new Date() },
-          useCount: { lt: invite.maxUses },
-        },
-        data: {
-          useCount: { increment: 1 },
-          usedById: newSession.user.id,
-        },
-      });
-      if (claimed.count !== 1) {
-        await prisma.user.delete({ where: { id: newSession.user.id } });
-        throw new APIError("BAD_REQUEST", {
-          message: "Invite code has already been used",
+      try {
+        await prisma.$transaction(async (tx) => {
+          const claimed = await tx.invite.updateMany({
+            where: {
+              code: invite.code,
+              expiresAt: { gt: new Date() },
+              useCount: { lt: invite.maxUses },
+            },
+            data: {
+              useCount: { increment: 1 },
+            },
+          });
+
+          if (claimed.count !== 1) {
+            throw new APIError("BAD_REQUEST", {
+              message: "Invite code has already been used",
+            });
+          }
+
+          await tx.inviteRedemption.create({
+            data: {
+              invite: { connect: { id: invite.id } },
+              redeemedUser: { connect: { id: newSession.user.id } },
+            },
+          });
+
+          await tx.user.update({
+            where: { id: newSession.user.id },
+            data: { status },
+          });
         });
-      } else {
-        await prisma.user.update({
-          where: { id: newSession.user.id },
-          data: { status },
+      } catch (error) {
+        await prisma.user.delete({ where: { id: newSession.user.id } });
+
+        if (error instanceof APIError) {
+          throw error;
+        }
+
+        throw new APIError("INTERNAL_SERVER_ERROR", {
+          message: "Signup failed while redeeming invite",
         });
       }
     }),

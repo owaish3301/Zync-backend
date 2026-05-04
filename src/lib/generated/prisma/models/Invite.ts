@@ -40,7 +40,6 @@ export type InviteMinAggregateOutputType = {
   id: string | null
   code: string | null
   createdById: string | null
-  usedById: string | null
   maxUses: number | null
   useCount: number | null
   expiresAt: Date | null
@@ -51,7 +50,6 @@ export type InviteMaxAggregateOutputType = {
   id: string | null
   code: string | null
   createdById: string | null
-  usedById: string | null
   maxUses: number | null
   useCount: number | null
   expiresAt: Date | null
@@ -62,7 +60,6 @@ export type InviteCountAggregateOutputType = {
   id: number
   code: number
   createdById: number
-  usedById: number
   maxUses: number
   useCount: number
   expiresAt: number
@@ -85,7 +82,6 @@ export type InviteMinAggregateInputType = {
   id?: true
   code?: true
   createdById?: true
-  usedById?: true
   maxUses?: true
   useCount?: true
   expiresAt?: true
@@ -96,7 +92,6 @@ export type InviteMaxAggregateInputType = {
   id?: true
   code?: true
   createdById?: true
-  usedById?: true
   maxUses?: true
   useCount?: true
   expiresAt?: true
@@ -107,7 +102,6 @@ export type InviteCountAggregateInputType = {
   id?: true
   code?: true
   createdById?: true
-  usedById?: true
   maxUses?: true
   useCount?: true
   expiresAt?: true
@@ -205,7 +199,6 @@ export type InviteGroupByOutputType = {
   id: string
   code: string
   createdById: string
-  usedById: string | null
   maxUses: number
   useCount: number
   expiresAt: Date
@@ -239,26 +232,24 @@ export type InviteWhereInput = {
   id?: Prisma.StringFilter<"Invite"> | string
   code?: Prisma.StringFilter<"Invite"> | string
   createdById?: Prisma.StringFilter<"Invite"> | string
-  usedById?: Prisma.StringNullableFilter<"Invite"> | string | null
   maxUses?: Prisma.IntFilter<"Invite"> | number
   useCount?: Prisma.IntFilter<"Invite"> | number
   expiresAt?: Prisma.DateTimeFilter<"Invite"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Invite"> | Date | string
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  usedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  inviteRedemptions?: Prisma.InviteRedemptionListRelationFilter
 }
 
 export type InviteOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  usedById?: Prisma.SortOrderInput | Prisma.SortOrder
   maxUses?: Prisma.SortOrder
   useCount?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   createdBy?: Prisma.UserOrderByWithRelationInput
-  usedBy?: Prisma.UserOrderByWithRelationInput
+  inviteRedemptions?: Prisma.InviteRedemptionOrderByRelationAggregateInput
 }
 
 export type InviteWhereUniqueInput = Prisma.AtLeast<{
@@ -268,20 +259,18 @@ export type InviteWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.InviteWhereInput[]
   NOT?: Prisma.InviteWhereInput | Prisma.InviteWhereInput[]
   createdById?: Prisma.StringFilter<"Invite"> | string
-  usedById?: Prisma.StringNullableFilter<"Invite"> | string | null
   maxUses?: Prisma.IntFilter<"Invite"> | number
   useCount?: Prisma.IntFilter<"Invite"> | number
   expiresAt?: Prisma.DateTimeFilter<"Invite"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Invite"> | Date | string
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
-  usedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  inviteRedemptions?: Prisma.InviteRedemptionListRelationFilter
 }, "id" | "code">
 
 export type InviteOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  usedById?: Prisma.SortOrderInput | Prisma.SortOrder
   maxUses?: Prisma.SortOrder
   useCount?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -300,7 +289,6 @@ export type InviteScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Invite"> | string
   code?: Prisma.StringWithAggregatesFilter<"Invite"> | string
   createdById?: Prisma.StringWithAggregatesFilter<"Invite"> | string
-  usedById?: Prisma.StringNullableWithAggregatesFilter<"Invite"> | string | null
   maxUses?: Prisma.IntWithAggregatesFilter<"Invite"> | number
   useCount?: Prisma.IntWithAggregatesFilter<"Invite"> | number
   expiresAt?: Prisma.DateTimeWithAggregatesFilter<"Invite"> | Date | string
@@ -315,18 +303,18 @@ export type InviteCreateInput = {
   expiresAt?: Date | string
   createdAt?: Date | string
   createdBy: Prisma.UserCreateNestedOneWithoutInvitesInput
-  usedBy?: Prisma.UserCreateNestedOneWithoutUsedInviteInput
+  inviteRedemptions?: Prisma.InviteRedemptionCreateNestedManyWithoutInviteInput
 }
 
 export type InviteUncheckedCreateInput = {
   id?: string
   code?: string
   createdById: string
-  usedById?: string | null
   maxUses?: number
   useCount?: number
   expiresAt?: Date | string
   createdAt?: Date | string
+  inviteRedemptions?: Prisma.InviteRedemptionUncheckedCreateNestedManyWithoutInviteInput
 }
 
 export type InviteUpdateInput = {
@@ -337,25 +325,24 @@ export type InviteUpdateInput = {
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdBy?: Prisma.UserUpdateOneRequiredWithoutInvitesNestedInput
-  usedBy?: Prisma.UserUpdateOneWithoutUsedInviteNestedInput
+  inviteRedemptions?: Prisma.InviteRedemptionUpdateManyWithoutInviteNestedInput
 }
 
 export type InviteUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
-  usedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxUses?: Prisma.IntFieldUpdateOperationsInput | number
   useCount?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  inviteRedemptions?: Prisma.InviteRedemptionUncheckedUpdateManyWithoutInviteNestedInput
 }
 
 export type InviteCreateManyInput = {
   id?: string
   code?: string
   createdById: string
-  usedById?: string | null
   maxUses?: number
   useCount?: number
   expiresAt?: Date | string
@@ -375,7 +362,6 @@ export type InviteUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   createdById?: Prisma.StringFieldUpdateOperationsInput | string
-  usedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxUses?: Prisma.IntFieldUpdateOperationsInput | number
   useCount?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -396,7 +382,6 @@ export type InviteCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  usedById?: Prisma.SortOrder
   maxUses?: Prisma.SortOrder
   useCount?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -412,7 +397,6 @@ export type InviteMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  usedById?: Prisma.SortOrder
   maxUses?: Prisma.SortOrder
   useCount?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -423,7 +407,6 @@ export type InviteMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   code?: Prisma.SortOrder
   createdById?: Prisma.SortOrder
-  usedById?: Prisma.SortOrder
   maxUses?: Prisma.SortOrder
   useCount?: Prisma.SortOrder
   expiresAt?: Prisma.SortOrder
@@ -435,6 +418,11 @@ export type InviteSumOrderByAggregateInput = {
   useCount?: Prisma.SortOrder
 }
 
+export type InviteScalarRelationFilter = {
+  is?: Prisma.InviteWhereInput
+  isNot?: Prisma.InviteWhereInput
+}
+
 export type InviteCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.InviteCreateWithoutCreatedByInput, Prisma.InviteUncheckedCreateWithoutCreatedByInput> | Prisma.InviteCreateWithoutCreatedByInput[] | Prisma.InviteUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.InviteCreateOrConnectWithoutCreatedByInput | Prisma.InviteCreateOrConnectWithoutCreatedByInput[]
@@ -442,24 +430,10 @@ export type InviteCreateNestedManyWithoutCreatedByInput = {
   connect?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
 }
 
-export type InviteCreateNestedManyWithoutUsedByInput = {
-  create?: Prisma.XOR<Prisma.InviteCreateWithoutUsedByInput, Prisma.InviteUncheckedCreateWithoutUsedByInput> | Prisma.InviteCreateWithoutUsedByInput[] | Prisma.InviteUncheckedCreateWithoutUsedByInput[]
-  connectOrCreate?: Prisma.InviteCreateOrConnectWithoutUsedByInput | Prisma.InviteCreateOrConnectWithoutUsedByInput[]
-  createMany?: Prisma.InviteCreateManyUsedByInputEnvelope
-  connect?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-}
-
 export type InviteUncheckedCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.InviteCreateWithoutCreatedByInput, Prisma.InviteUncheckedCreateWithoutCreatedByInput> | Prisma.InviteCreateWithoutCreatedByInput[] | Prisma.InviteUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.InviteCreateOrConnectWithoutCreatedByInput | Prisma.InviteCreateOrConnectWithoutCreatedByInput[]
   createMany?: Prisma.InviteCreateManyCreatedByInputEnvelope
-  connect?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-}
-
-export type InviteUncheckedCreateNestedManyWithoutUsedByInput = {
-  create?: Prisma.XOR<Prisma.InviteCreateWithoutUsedByInput, Prisma.InviteUncheckedCreateWithoutUsedByInput> | Prisma.InviteCreateWithoutUsedByInput[] | Prisma.InviteUncheckedCreateWithoutUsedByInput[]
-  connectOrCreate?: Prisma.InviteCreateOrConnectWithoutUsedByInput | Prisma.InviteCreateOrConnectWithoutUsedByInput[]
-  createMany?: Prisma.InviteCreateManyUsedByInputEnvelope
   connect?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
 }
 
@@ -477,20 +451,6 @@ export type InviteUpdateManyWithoutCreatedByNestedInput = {
   deleteMany?: Prisma.InviteScalarWhereInput | Prisma.InviteScalarWhereInput[]
 }
 
-export type InviteUpdateManyWithoutUsedByNestedInput = {
-  create?: Prisma.XOR<Prisma.InviteCreateWithoutUsedByInput, Prisma.InviteUncheckedCreateWithoutUsedByInput> | Prisma.InviteCreateWithoutUsedByInput[] | Prisma.InviteUncheckedCreateWithoutUsedByInput[]
-  connectOrCreate?: Prisma.InviteCreateOrConnectWithoutUsedByInput | Prisma.InviteCreateOrConnectWithoutUsedByInput[]
-  upsert?: Prisma.InviteUpsertWithWhereUniqueWithoutUsedByInput | Prisma.InviteUpsertWithWhereUniqueWithoutUsedByInput[]
-  createMany?: Prisma.InviteCreateManyUsedByInputEnvelope
-  set?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-  disconnect?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-  delete?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-  connect?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-  update?: Prisma.InviteUpdateWithWhereUniqueWithoutUsedByInput | Prisma.InviteUpdateWithWhereUniqueWithoutUsedByInput[]
-  updateMany?: Prisma.InviteUpdateManyWithWhereWithoutUsedByInput | Prisma.InviteUpdateManyWithWhereWithoutUsedByInput[]
-  deleteMany?: Prisma.InviteScalarWhereInput | Prisma.InviteScalarWhereInput[]
-}
-
 export type InviteUncheckedUpdateManyWithoutCreatedByNestedInput = {
   create?: Prisma.XOR<Prisma.InviteCreateWithoutCreatedByInput, Prisma.InviteUncheckedCreateWithoutCreatedByInput> | Prisma.InviteCreateWithoutCreatedByInput[] | Prisma.InviteUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.InviteCreateOrConnectWithoutCreatedByInput | Prisma.InviteCreateOrConnectWithoutCreatedByInput[]
@@ -505,26 +465,26 @@ export type InviteUncheckedUpdateManyWithoutCreatedByNestedInput = {
   deleteMany?: Prisma.InviteScalarWhereInput | Prisma.InviteScalarWhereInput[]
 }
 
-export type InviteUncheckedUpdateManyWithoutUsedByNestedInput = {
-  create?: Prisma.XOR<Prisma.InviteCreateWithoutUsedByInput, Prisma.InviteUncheckedCreateWithoutUsedByInput> | Prisma.InviteCreateWithoutUsedByInput[] | Prisma.InviteUncheckedCreateWithoutUsedByInput[]
-  connectOrCreate?: Prisma.InviteCreateOrConnectWithoutUsedByInput | Prisma.InviteCreateOrConnectWithoutUsedByInput[]
-  upsert?: Prisma.InviteUpsertWithWhereUniqueWithoutUsedByInput | Prisma.InviteUpsertWithWhereUniqueWithoutUsedByInput[]
-  createMany?: Prisma.InviteCreateManyUsedByInputEnvelope
-  set?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-  disconnect?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-  delete?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-  connect?: Prisma.InviteWhereUniqueInput | Prisma.InviteWhereUniqueInput[]
-  update?: Prisma.InviteUpdateWithWhereUniqueWithoutUsedByInput | Prisma.InviteUpdateWithWhereUniqueWithoutUsedByInput[]
-  updateMany?: Prisma.InviteUpdateManyWithWhereWithoutUsedByInput | Prisma.InviteUpdateManyWithWhereWithoutUsedByInput[]
-  deleteMany?: Prisma.InviteScalarWhereInput | Prisma.InviteScalarWhereInput[]
-}
-
 export type IntFieldUpdateOperationsInput = {
   set?: number
   increment?: number
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type InviteCreateNestedOneWithoutInviteRedemptionsInput = {
+  create?: Prisma.XOR<Prisma.InviteCreateWithoutInviteRedemptionsInput, Prisma.InviteUncheckedCreateWithoutInviteRedemptionsInput>
+  connectOrCreate?: Prisma.InviteCreateOrConnectWithoutInviteRedemptionsInput
+  connect?: Prisma.InviteWhereUniqueInput
+}
+
+export type InviteUpdateOneRequiredWithoutInviteRedemptionsNestedInput = {
+  create?: Prisma.XOR<Prisma.InviteCreateWithoutInviteRedemptionsInput, Prisma.InviteUncheckedCreateWithoutInviteRedemptionsInput>
+  connectOrCreate?: Prisma.InviteCreateOrConnectWithoutInviteRedemptionsInput
+  upsert?: Prisma.InviteUpsertWithoutInviteRedemptionsInput
+  connect?: Prisma.InviteWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.InviteUpdateToOneWithWhereWithoutInviteRedemptionsInput, Prisma.InviteUpdateWithoutInviteRedemptionsInput>, Prisma.InviteUncheckedUpdateWithoutInviteRedemptionsInput>
 }
 
 export type InviteCreateWithoutCreatedByInput = {
@@ -534,17 +494,17 @@ export type InviteCreateWithoutCreatedByInput = {
   useCount?: number
   expiresAt?: Date | string
   createdAt?: Date | string
-  usedBy?: Prisma.UserCreateNestedOneWithoutUsedInviteInput
+  inviteRedemptions?: Prisma.InviteRedemptionCreateNestedManyWithoutInviteInput
 }
 
 export type InviteUncheckedCreateWithoutCreatedByInput = {
   id?: string
   code?: string
-  usedById?: string | null
   maxUses?: number
   useCount?: number
   expiresAt?: Date | string
   createdAt?: Date | string
+  inviteRedemptions?: Prisma.InviteRedemptionUncheckedCreateNestedManyWithoutInviteInput
 }
 
 export type InviteCreateOrConnectWithoutCreatedByInput = {
@@ -554,36 +514,6 @@ export type InviteCreateOrConnectWithoutCreatedByInput = {
 
 export type InviteCreateManyCreatedByInputEnvelope = {
   data: Prisma.InviteCreateManyCreatedByInput | Prisma.InviteCreateManyCreatedByInput[]
-  skipDuplicates?: boolean
-}
-
-export type InviteCreateWithoutUsedByInput = {
-  id?: string
-  code?: string
-  maxUses?: number
-  useCount?: number
-  expiresAt?: Date | string
-  createdAt?: Date | string
-  createdBy: Prisma.UserCreateNestedOneWithoutInvitesInput
-}
-
-export type InviteUncheckedCreateWithoutUsedByInput = {
-  id?: string
-  code?: string
-  createdById: string
-  maxUses?: number
-  useCount?: number
-  expiresAt?: Date | string
-  createdAt?: Date | string
-}
-
-export type InviteCreateOrConnectWithoutUsedByInput = {
-  where: Prisma.InviteWhereUniqueInput
-  create: Prisma.XOR<Prisma.InviteCreateWithoutUsedByInput, Prisma.InviteUncheckedCreateWithoutUsedByInput>
-}
-
-export type InviteCreateManyUsedByInputEnvelope = {
-  data: Prisma.InviteCreateManyUsedByInput | Prisma.InviteCreateManyUsedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -610,43 +540,71 @@ export type InviteScalarWhereInput = {
   id?: Prisma.StringFilter<"Invite"> | string
   code?: Prisma.StringFilter<"Invite"> | string
   createdById?: Prisma.StringFilter<"Invite"> | string
-  usedById?: Prisma.StringNullableFilter<"Invite"> | string | null
   maxUses?: Prisma.IntFilter<"Invite"> | number
   useCount?: Prisma.IntFilter<"Invite"> | number
   expiresAt?: Prisma.DateTimeFilter<"Invite"> | Date | string
   createdAt?: Prisma.DateTimeFilter<"Invite"> | Date | string
 }
 
-export type InviteUpsertWithWhereUniqueWithoutUsedByInput = {
-  where: Prisma.InviteWhereUniqueInput
-  update: Prisma.XOR<Prisma.InviteUpdateWithoutUsedByInput, Prisma.InviteUncheckedUpdateWithoutUsedByInput>
-  create: Prisma.XOR<Prisma.InviteCreateWithoutUsedByInput, Prisma.InviteUncheckedCreateWithoutUsedByInput>
-}
-
-export type InviteUpdateWithWhereUniqueWithoutUsedByInput = {
-  where: Prisma.InviteWhereUniqueInput
-  data: Prisma.XOR<Prisma.InviteUpdateWithoutUsedByInput, Prisma.InviteUncheckedUpdateWithoutUsedByInput>
-}
-
-export type InviteUpdateManyWithWhereWithoutUsedByInput = {
-  where: Prisma.InviteScalarWhereInput
-  data: Prisma.XOR<Prisma.InviteUpdateManyMutationInput, Prisma.InviteUncheckedUpdateManyWithoutUsedByInput>
-}
-
-export type InviteCreateManyCreatedByInput = {
+export type InviteCreateWithoutInviteRedemptionsInput = {
   id?: string
   code?: string
-  usedById?: string | null
+  maxUses?: number
+  useCount?: number
+  expiresAt?: Date | string
+  createdAt?: Date | string
+  createdBy: Prisma.UserCreateNestedOneWithoutInvitesInput
+}
+
+export type InviteUncheckedCreateWithoutInviteRedemptionsInput = {
+  id?: string
+  code?: string
+  createdById: string
   maxUses?: number
   useCount?: number
   expiresAt?: Date | string
   createdAt?: Date | string
 }
 
-export type InviteCreateManyUsedByInput = {
+export type InviteCreateOrConnectWithoutInviteRedemptionsInput = {
+  where: Prisma.InviteWhereUniqueInput
+  create: Prisma.XOR<Prisma.InviteCreateWithoutInviteRedemptionsInput, Prisma.InviteUncheckedCreateWithoutInviteRedemptionsInput>
+}
+
+export type InviteUpsertWithoutInviteRedemptionsInput = {
+  update: Prisma.XOR<Prisma.InviteUpdateWithoutInviteRedemptionsInput, Prisma.InviteUncheckedUpdateWithoutInviteRedemptionsInput>
+  create: Prisma.XOR<Prisma.InviteCreateWithoutInviteRedemptionsInput, Prisma.InviteUncheckedCreateWithoutInviteRedemptionsInput>
+  where?: Prisma.InviteWhereInput
+}
+
+export type InviteUpdateToOneWithWhereWithoutInviteRedemptionsInput = {
+  where?: Prisma.InviteWhereInput
+  data: Prisma.XOR<Prisma.InviteUpdateWithoutInviteRedemptionsInput, Prisma.InviteUncheckedUpdateWithoutInviteRedemptionsInput>
+}
+
+export type InviteUpdateWithoutInviteRedemptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  maxUses?: Prisma.IntFieldUpdateOperationsInput | number
+  useCount?: Prisma.IntFieldUpdateOperationsInput | number
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutInvitesNestedInput
+}
+
+export type InviteUncheckedUpdateWithoutInviteRedemptionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  maxUses?: Prisma.IntFieldUpdateOperationsInput | number
+  useCount?: Prisma.IntFieldUpdateOperationsInput | number
+  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type InviteCreateManyCreatedByInput = {
   id?: string
   code?: string
-  createdById: string
   maxUses?: number
   useCount?: number
   expiresAt?: Date | string
@@ -660,136 +618,127 @@ export type InviteUpdateWithoutCreatedByInput = {
   useCount?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  usedBy?: Prisma.UserUpdateOneWithoutUsedInviteNestedInput
+  inviteRedemptions?: Prisma.InviteRedemptionUpdateManyWithoutInviteNestedInput
 }
 
 export type InviteUncheckedUpdateWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
-  usedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxUses?: Prisma.IntFieldUpdateOperationsInput | number
   useCount?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  inviteRedemptions?: Prisma.InviteRedemptionUncheckedUpdateManyWithoutInviteNestedInput
 }
 
 export type InviteUncheckedUpdateManyWithoutCreatedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
-  usedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   maxUses?: Prisma.IntFieldUpdateOperationsInput | number
   useCount?: Prisma.IntFieldUpdateOperationsInput | number
   expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
-export type InviteUpdateWithoutUsedByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  maxUses?: Prisma.IntFieldUpdateOperationsInput | number
-  useCount?: Prisma.IntFieldUpdateOperationsInput | number
-  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdBy?: Prisma.UserUpdateOneRequiredWithoutInvitesNestedInput
+
+/**
+ * Count Type InviteCountOutputType
+ */
+
+export type InviteCountOutputType = {
+  inviteRedemptions: number
 }
 
-export type InviteUncheckedUpdateWithoutUsedByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
-  maxUses?: Prisma.IntFieldUpdateOperationsInput | number
-  useCount?: Prisma.IntFieldUpdateOperationsInput | number
-  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type InviteCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  inviteRedemptions?: boolean | InviteCountOutputTypeCountInviteRedemptionsArgs
 }
 
-export type InviteUncheckedUpdateManyWithoutUsedByInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  code?: Prisma.StringFieldUpdateOperationsInput | string
-  createdById?: Prisma.StringFieldUpdateOperationsInput | string
-  maxUses?: Prisma.IntFieldUpdateOperationsInput | number
-  useCount?: Prisma.IntFieldUpdateOperationsInput | number
-  expiresAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+/**
+ * InviteCountOutputType without action
+ */
+export type InviteCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the InviteCountOutputType
+   */
+  select?: Prisma.InviteCountOutputTypeSelect<ExtArgs> | null
 }
 
+/**
+ * InviteCountOutputType without action
+ */
+export type InviteCountOutputTypeCountInviteRedemptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InviteRedemptionWhereInput
+}
 
 
 export type InviteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   code?: boolean
   createdById?: boolean
-  usedById?: boolean
   maxUses?: boolean
   useCount?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  usedBy?: boolean | Prisma.Invite$usedByArgs<ExtArgs>
+  inviteRedemptions?: boolean | Prisma.Invite$inviteRedemptionsArgs<ExtArgs>
+  _count?: boolean | Prisma.InviteCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["invite"]>
 
 export type InviteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   code?: boolean
   createdById?: boolean
-  usedById?: boolean
   maxUses?: boolean
   useCount?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  usedBy?: boolean | Prisma.Invite$usedByArgs<ExtArgs>
 }, ExtArgs["result"]["invite"]>
 
 export type InviteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   code?: boolean
   createdById?: boolean
-  usedById?: boolean
   maxUses?: boolean
   useCount?: boolean
   expiresAt?: boolean
   createdAt?: boolean
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  usedBy?: boolean | Prisma.Invite$usedByArgs<ExtArgs>
 }, ExtArgs["result"]["invite"]>
 
 export type InviteSelectScalar = {
   id?: boolean
   code?: boolean
   createdById?: boolean
-  usedById?: boolean
   maxUses?: boolean
   useCount?: boolean
   expiresAt?: boolean
   createdAt?: boolean
 }
 
-export type InviteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "createdById" | "usedById" | "maxUses" | "useCount" | "expiresAt" | "createdAt", ExtArgs["result"]["invite"]>
+export type InviteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "createdById" | "maxUses" | "useCount" | "expiresAt" | "createdAt", ExtArgs["result"]["invite"]>
 export type InviteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  usedBy?: boolean | Prisma.Invite$usedByArgs<ExtArgs>
+  inviteRedemptions?: boolean | Prisma.Invite$inviteRedemptionsArgs<ExtArgs>
+  _count?: boolean | Prisma.InviteCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type InviteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  usedBy?: boolean | Prisma.Invite$usedByArgs<ExtArgs>
 }
 export type InviteIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
-  usedBy?: boolean | Prisma.Invite$usedByArgs<ExtArgs>
 }
 
 export type $InvitePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Invite"
   objects: {
     createdBy: Prisma.$UserPayload<ExtArgs>
-    usedBy: Prisma.$UserPayload<ExtArgs> | null
+    inviteRedemptions: Prisma.$InviteRedemptionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     code: string
     createdById: string
-    usedById: string | null
     maxUses: number
     useCount: number
     expiresAt: Date
@@ -1189,7 +1138,7 @@ readonly fields: InviteFieldRefs;
 export interface Prisma__InviteClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  usedBy<T extends Prisma.Invite$usedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invite$usedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  inviteRedemptions<T extends Prisma.Invite$inviteRedemptionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Invite$inviteRedemptionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InviteRedemptionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1222,7 +1171,6 @@ export interface InviteFieldRefs {
   readonly id: Prisma.FieldRef<"Invite", 'String'>
   readonly code: Prisma.FieldRef<"Invite", 'String'>
   readonly createdById: Prisma.FieldRef<"Invite", 'String'>
-  readonly usedById: Prisma.FieldRef<"Invite", 'String'>
   readonly maxUses: Prisma.FieldRef<"Invite", 'Int'>
   readonly useCount: Prisma.FieldRef<"Invite", 'Int'>
   readonly expiresAt: Prisma.FieldRef<"Invite", 'DateTime'>
@@ -1628,22 +1576,27 @@ export type InviteDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Intern
 }
 
 /**
- * Invite.usedBy
+ * Invite.inviteRedemptions
  */
-export type Invite$usedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+export type Invite$inviteRedemptionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   /**
-   * Select specific fields to fetch from the User
+   * Select specific fields to fetch from the InviteRedemption
    */
-  select?: Prisma.UserSelect<ExtArgs> | null
+  select?: Prisma.InviteRedemptionSelect<ExtArgs> | null
   /**
-   * Omit specific fields from the User
+   * Omit specific fields from the InviteRedemption
    */
-  omit?: Prisma.UserOmit<ExtArgs> | null
+  omit?: Prisma.InviteRedemptionOmit<ExtArgs> | null
   /**
    * Choose, which related nodes to fetch as well
    */
-  include?: Prisma.UserInclude<ExtArgs> | null
-  where?: Prisma.UserWhereInput
+  include?: Prisma.InviteRedemptionInclude<ExtArgs> | null
+  where?: Prisma.InviteRedemptionWhereInput
+  orderBy?: Prisma.InviteRedemptionOrderByWithRelationInput | Prisma.InviteRedemptionOrderByWithRelationInput[]
+  cursor?: Prisma.InviteRedemptionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InviteRedemptionScalarFieldEnum | Prisma.InviteRedemptionScalarFieldEnum[]
 }
 
 /**

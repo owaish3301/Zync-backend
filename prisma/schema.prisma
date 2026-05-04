@@ -33,7 +33,7 @@ model User {
   taskRequests TaskRequest[]
   comments Comment[]
   invites Invite[] @relation("InviteCreatedBy")
-  usedInvite Invite[] @relation("InviteUsedBy")
+  inviteRedemptions InviteRedemption[]
 
   @@unique([email])
   @@map("user")
@@ -193,13 +193,25 @@ model Invite {
   code        String @default(uuid()) @unique
   createdById String
   createdBy   User    @relation("InviteCreatedBy",fields: [createdById], references: [id])
-  usedById    String?
-  usedBy      User?   @relation("InviteUsedBy",fields: [usedById], references: [id])
   maxUses     Int     @default(1)
   useCount    Int     @default(0)
   expiresAt   DateTime @default(dbgenerated("NOW() + interval '2 hours'"))
   createdAt   DateTime @default(now())
-
+  inviteRedemptions InviteRedemption[]
+  
   @@index([createdById])
   @@index([code])
+}
+
+model InviteRedemption {
+  id String @default(uuid()) @id
+  inviteId String
+  invite Invite @relation(fields : [inviteId], references : [id])
+  redeemedByUserId String
+  redeemedUser User @relation(fields:[redeemedByUserId], references : [id])
+  createdAt DateTime @default(now())
+
+  @@index([inviteId])
+  @@index([redeemedByUserId])
+  @@unique([redeemedByUserId])
 }

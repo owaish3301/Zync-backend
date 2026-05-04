@@ -59,7 +59,8 @@ export const ModelName = {
   Task: 'Task',
   TaskRequest: 'TaskRequest',
   Comment: 'Comment',
-  Invite: 'Invite'
+  Invite: 'Invite',
+  InviteRedemption: 'InviteRedemption'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -203,7 +204,6 @@ export const InviteScalarFieldEnum = {
   id: 'id',
   code: 'code',
   createdById: 'createdById',
-  usedById: 'usedById',
   maxUses: 'maxUses',
   useCount: 'useCount',
   expiresAt: 'expiresAt',
@@ -211,6 +211,16 @@ export const InviteScalarFieldEnum = {
 } as const
 
 export type InviteScalarFieldEnum = (typeof InviteScalarFieldEnum)[keyof typeof InviteScalarFieldEnum]
+
+
+export const InviteRedemptionScalarFieldEnum = {
+  id: 'id',
+  inviteId: 'inviteId',
+  redeemedByUserId: 'redeemedByUserId',
+  createdAt: 'createdAt'
+} as const
+
+export type InviteRedemptionScalarFieldEnum = (typeof InviteRedemptionScalarFieldEnum)[keyof typeof InviteRedemptionScalarFieldEnum]
 
 
 export const SortOrder = {

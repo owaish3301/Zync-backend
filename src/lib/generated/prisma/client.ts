@@ -86,3 +86,8 @@ export type Comment = Prisma.CommentModel
  * 
  */
 export type Invite = Prisma.InviteModel
+/**
+ * Model InviteRedemption
+ * 
+ */
+export type InviteRedemption = Prisma.InviteRedemptionModel

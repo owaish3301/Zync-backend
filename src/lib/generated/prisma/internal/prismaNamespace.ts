@@ -392,7 +392,8 @@ export const ModelName = {
   Task: 'Task',
   TaskRequest: 'TaskRequest',
   Comment: 'Comment',
-  Invite: 'Invite'
+  Invite: 'Invite',
+  InviteRedemption: 'InviteRedemption'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -408,7 +409,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "session" | "account" | "verification" | "project" | "task" | "taskRequest" | "comment" | "invite"
+    modelProps: "user" | "session" | "account" | "verification" | "project" | "task" | "taskRequest" | "comment" | "invite" | "inviteRedemption"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1078,6 +1079,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    InviteRedemption: {
+      payload: Prisma.$InviteRedemptionPayload<ExtArgs>
+      fields: Prisma.InviteRedemptionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InviteRedemptionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InviteRedemptionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload>
+        }
+        findFirst: {
+          args: Prisma.InviteRedemptionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InviteRedemptionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload>
+        }
+        findMany: {
+          args: Prisma.InviteRedemptionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload>[]
+        }
+        create: {
+          args: Prisma.InviteRedemptionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload>
+        }
+        createMany: {
+          args: Prisma.InviteRedemptionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InviteRedemptionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload>[]
+        }
+        delete: {
+          args: Prisma.InviteRedemptionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload>
+        }
+        update: {
+          args: Prisma.InviteRedemptionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload>
+        }
+        deleteMany: {
+          args: Prisma.InviteRedemptionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InviteRedemptionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InviteRedemptionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload>[]
+        }
+        upsert: {
+          args: Prisma.InviteRedemptionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InviteRedemptionPayload>
+        }
+        aggregate: {
+          args: Prisma.InviteRedemptionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInviteRedemption>
+        }
+        groupBy: {
+          args: Prisma.InviteRedemptionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InviteRedemptionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InviteRedemptionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InviteRedemptionCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1242,7 +1317,6 @@ export const InviteScalarFieldEnum = {
   id: 'id',
   code: 'code',
   createdById: 'createdById',
-  usedById: 'usedById',
   maxUses: 'maxUses',
   useCount: 'useCount',
   expiresAt: 'expiresAt',
@@ -1250,6 +1324,16 @@ export const InviteScalarFieldEnum = {
 } as const
 
 export type InviteScalarFieldEnum = (typeof InviteScalarFieldEnum)[keyof typeof InviteScalarFieldEnum]
+
+
+export const InviteRedemptionScalarFieldEnum = {
+  id: 'id',
+  inviteId: 'inviteId',
+  redeemedByUserId: 'redeemedByUserId',
+  createdAt: 'createdAt'
+} as const
+
+export type InviteRedemptionScalarFieldEnum = (typeof InviteRedemptionScalarFieldEnum)[keyof typeof InviteRedemptionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1519,6 +1603,7 @@ export type GlobalOmitConfig = {
   taskRequest?: Prisma.TaskRequestOmit
   comment?: Prisma.CommentOmit
   invite?: Prisma.InviteOmit
+  inviteRedemption?: Prisma.InviteRedemptionOmit
 }
 
 /* Types for Logging */
