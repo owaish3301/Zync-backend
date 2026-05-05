@@ -7,8 +7,26 @@ async function createInvite(req: Request, res: Response) {
     if(!session){
       return res.status(403).json({error:"MISSING_SESSION", message:"Unauthenticated"})
     }
-    const maxUsesBody = Number(req.body.maxUses);
-    const maxUses = session.user.role === "SuperAdmin" ? isNaN(maxUsesBody)?1:maxUsesBody>0?maxUsesBody:1 : 1;
+    let maxUses = 1;
+
+    if (session.user.role === "SuperAdmin" && req.body.maxUses !== undefined) {
+      const maxUsesInput = Number(req.body.maxUses);
+
+      if (
+        !Number.isFinite(maxUsesInput) ||
+        !Number.isInteger(maxUsesInput) ||
+        maxUsesInput < 1 ||
+        maxUsesInput > 100
+      ) {
+        return res.status(400).json({
+          error: "INVALID_MAX_USES",
+          message: "maxUses must be an integer between 1 and 100",
+        });
+      }
+
+      maxUses = maxUsesInput;
+    }
+
     const invite = await prisma.invite.create({
       data: {
         createdBy: {
