@@ -2,7 +2,14 @@
 import type { Request, Response, NextFunction } from "express";
 
 function requireUsername(req: Request, res: Response, next: NextFunction) {
-  if (!req.session!.user.username) {
+  const session = req.session;
+  if (!session) {
+    return res
+      .status(400)
+      .json({ error: "MISSING_SESSION", message: "Unauthenticated" });
+  }
+  const user = session.user;
+  if (user.username) {
     return res.status(403).json({
       error: "USERNAME_REQUIRED",
       message: "Please set a username before continuing",

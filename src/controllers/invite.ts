@@ -30,7 +30,7 @@ async function createInvite(req: Request, res: Response) {
     const invite = await prisma.invite.create({
       data: {
         createdBy: {
-          connect: { id: session!.user.id },
+          connect: { id: session.user.id },
         },
         maxUses: maxUses,
       },

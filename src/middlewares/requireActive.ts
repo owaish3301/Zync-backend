@@ -2,7 +2,13 @@
 import type { Request, Response, NextFunction } from "express";
 
 function requireActive(req: Request, res: Response, next: NextFunction) {
-  const user = req.session!.user;
+  const session = req.session;
+  if(!session){
+    return res
+      .status(400)
+      .json({ error: "MISSING_SESSION", message: "Unauthenticated" });
+  }
+  const user = session.user;
   if (user.status !== "ACTIVE" || user.deletedAt !== null) {
     return res.status(403).json({
       error: "INACTIVE_USER",
