@@ -4,8 +4,11 @@ import { prisma } from "../lib/prisma";
 async function createInvite(req: Request, res: Response) {
   try {
     const session = req.session;
-    const maxUses = session!.user.role === "SuperAdmin" ? req.body.maxUses : 1;
-
+    if(!session){
+      return res.status(403).json({error:"MISSING_SESSION", message:"Unauthenticated"})
+    }
+    const maxUsesBody = Number(req.body.maxUses);
+    const maxUses = session.user.role === "SuperAdmin" ? isNaN(maxUsesBody)?1:maxUsesBody>0?maxUsesBody:1 : 1;
     const invite = await prisma.invite.create({
       data: {
         createdBy: {
