@@ -90,10 +90,15 @@ async function banUser(req: Request, res: Response) {
         .status(400)
         .json({ error: "INVALID_ID", message: "Provide a valid user id" });
     }
-    await prisma.user.update({
-      where: { id },
-      data: { status: "BANNED" },
-    });
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { id },
+        data: { status: "BANNED" },
+      }),
+      prisma.session.deleteMany({
+        where: { userId: id },
+      }),
+    ]);
 
     return res.status(200).json({ message: "User banned" });
   } catch (error: unknown) {
@@ -124,12 +129,17 @@ async function deleteUser(req: Request, res: Response) {
         .status(400)
         .json({ error: "INVALID_ID", message: "Provide a valid user id" });
     }
-    await prisma.user.update({
-      where: { id: id },
-      data: {
-        deletedAt: new Date(),
-      },
-    });
+    await prisma.$transaction([
+      prisma.user.update({
+        where: { id: id },
+        data: {
+          deletedAt: new Date(),
+        },
+      }),
+      prisma.session.deleteMany({
+        where: { userId: id },
+      }),
+    ]);
 
     return res.status(204).send();
   } catch (error: unknown) {
