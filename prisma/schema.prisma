@@ -100,7 +100,7 @@ model Verification {
 
 model Project {
   id String @default(uuid()) @id
-  slug String @unique
+  slug String
   title String
   shortDescription String
   fullDescription String
@@ -116,6 +116,7 @@ model Project {
 
   @@index([maintainerId])
   @@index([deletedAt])
+  @@unique([slug, maintainerId])
 }
 
 model Task {

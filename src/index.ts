@@ -5,6 +5,7 @@ import { auth } from "./lib/auth.js";
 import cors from "cors";
 import { inviteRouter } from "./routes/invite.js";
 import { userRouter } from "./routes/user.js";
+import { projectRouter } from "./routes/project.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get("/api/health", (_req, res: Response) => {
 
 app.use("/api/invites", inviteRouter);
 app.use("/api/users", userRouter);
+app.use("/api/projects", projectRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running at port ${PORT}`);
