@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { auth } from "../lib/auth";
 import { fromNodeHeaders } from "better-auth/node";
 
-async function validateAuth(req: Request, res: Response, next: NextFunction) {
+async function requireAuth(req: Request, res: Response, next: NextFunction) {
   try {
     const session = await auth.api.getSession({
       headers: fromNodeHeaders(req.headers),
@@ -21,4 +21,4 @@ async function validateAuth(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export default validateAuth;
+export default requireAuth;
